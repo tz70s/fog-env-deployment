@@ -69,5 +69,10 @@ ip tuntap
 # Delete virtual port
 ip link del
 
-# The configure virtualbox network setting, bridge to vnet0
+# Then configure virtualbox network setting, bridge to vnet0
 ```
+
+### Reference
+* [ovs settings](http://neokentblog.blogspot.tw/2013/10/linuxopenflow-switchopenvswitch.html)
+* [ovs virtualbox](http://networkstatic.net/open-vswitch-on-virtualbox/)
+
