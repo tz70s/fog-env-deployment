@@ -7,7 +7,7 @@ Openvswitch 2.5.0
 ```
 
 ## Installation
-```Bash
+```Shell
 # We can use apt-get in the Ubuntu 16.04 LTS version (2016 Realse)
 sudo apt-get install openvswitch-switch
 
@@ -31,7 +31,7 @@ sudo ovs-vsctl show
 ```
 
 ## OVS Bridge/Port Setting && Linux Birdge
-```Bash
+```Shell
 # Add bridge to ovs
 sudo ovs-vsctl add-br br0
 
@@ -57,7 +57,7 @@ route -n
 ```
 
 ## Lab1 - Bidge with virtualbox (vm)
-```Bash
+```Shell
 # Add virtual port
 ip tuntap add mode tap vnet0
 ip link set vnet0 up
