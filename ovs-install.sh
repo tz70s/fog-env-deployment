@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "OS version : Ubuntu 16.04 LTS"
 echo "Start installing openvswitch"
 
