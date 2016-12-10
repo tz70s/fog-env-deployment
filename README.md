@@ -15,7 +15,7 @@ Ubuntu Server 16.04.1 LTS
 ./kvm-install.sh
 ```
 
-* [Install_OpenvSwitch](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/ovs-install.md)
+* [Install OpenvSwitch](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/ovs-install.md)
 ```bash
 ./ovs-install.sh
 ```

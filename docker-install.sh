@@ -47,10 +47,23 @@ sudo apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual
 sudo apt-get update
 sudo apt-get install -y docker-engine
 sudo service docker start
-sudo docker run hello-world
 
 # Executing the Docker command without sudo
 
-sudo usermod -aG docker $(whoami)
+sudo groupadd docker
+sudo usermod -aG docker $USER
 
-docker
+# Need to Reboot
+
+echo "You need to reboot to have the usermode change"
+echo "Reboot ? y/n"
+
+read ANS
+
+if [ $ANS = 'y' || $ANS == 'Y' ]; then
+	sudo reboot
+else
+	echo "Remember to reboot later"
+fi
+
+
