@@ -4,6 +4,7 @@
 
 * While in-vm ovs configuration, it can't access outside the subnet
 * [docker container dhcp issue](http://unix.stackexchange.com/questions/155990/docker-bridges-dhcp)
+* After exiting container, the network configuration will be disappear. It may be configure in /etc/network/interface as booting initialization?
 
 ##REFERNCES
 
