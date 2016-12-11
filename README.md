@@ -63,5 +63,3 @@ sudo ifconfig eth0 0
 
 ### TROUBLE SHOOT
 * See [Config Docker Network and Bridge with OVS](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/docker-ovs.md)
-
-* After exiting container, the network configuration will be disappear. It may be configure in /etc/network/interface as booting initialization?
