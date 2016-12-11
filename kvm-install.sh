@@ -19,7 +19,7 @@ fi
 echo
 echo "Start kvm and dependencies installations"
 
-sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utls virt-manager
+sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils virt-manager
 
 echo "Automatically reboot? y/n"
 read ANS
