@@ -22,6 +22,28 @@ Ubuntu Server 16.04.1 LTS
 
 * [Create KVM VM and Bridge with OVS]()
 ```bash
+# First Configure ovs bridge and ovs network setting
+# e.g.
+
+sudo ovs-vsctl add-br ovs-br0 
+# The bridge name have to match with kvm-build.sh (virt-install)
+
+# Then configure network from osv bridge to physical nic
+# e.g. ( I use dhcp )
+
+# add original ethernet into ovs-br
+sudo ovs-vsctl add-port ovs-br0 eth0
+sudo dhclient ovs-br0 
+sudo ifconfig eth0 0
+```
+
+```bash
+# Then build kvm vm with os
+./kvm-build.sh
+
+# KVM will automatically add ovs-port to ovs-bridge and vnic to vm
+# The ip of this configuration is dhcpclient
+# You should check out if there is a dhcp server can be connected
 ```
 
 * [Install Docker on KVM ubuntu-server](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/docker-install.md)
