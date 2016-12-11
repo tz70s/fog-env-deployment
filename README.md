@@ -38,7 +38,7 @@ sudo ifconfig eth0 0
 ```
 
 ```bash
-# Then build kvm vm with os
+# Then build kvm vm with ovs
 ./kvm-build.sh
 
 # KVM will automatically add ovs-port to ovs-bridge and vnic to vm
