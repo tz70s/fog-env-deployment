@@ -64,3 +64,4 @@ sudo ifconfig eth0 0
 ### TROUBLE SHOOT
 * See [Config Docker Network and Bridge with OVS](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/docker-ovs.md)
 * [Ubuntu kvm hvm trouble](http://qkxue.net/info/189364/ubuntu-kvm-ubuntu-quot-Couldn-find-hvm-kernel-for-Ubuntu-tree-quot-04-64-39)
+* After in-vm ovs configuration, it can't access outside the subnet
