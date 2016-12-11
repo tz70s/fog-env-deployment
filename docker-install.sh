@@ -60,7 +60,7 @@ echo "Reboot ? y/n"
 
 read ANS
 
-if [ $ANS = 'y' || $ANS == 'Y' ]; then
+if [ $ANS = 'y' ]; then
 	sudo reboot
 else
 	echo "Remember to reboot later"
