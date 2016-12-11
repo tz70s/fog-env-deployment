@@ -15,5 +15,3 @@ sudo ovs-vsctl add-br ovs-br0
 sudo ovs-vsctl add-port ovs-br0 ens3
 sudo dhclient ovs-br0
 sudo ifconfig ens3 0
-
-
