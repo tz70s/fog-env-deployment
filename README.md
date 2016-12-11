@@ -63,3 +63,4 @@ sudo ifconfig eth0 0
 
 ### TROUBLE SHOOT
 * See [Config Docker Network and Bridge with OVS](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/docker-ovs.md)
+* [Ubuntu kvm hvm trouble](https://qkxue.net/info/189364/ubuntu-kvm-quot-Couldn-find-hvm-kernel-for-Ubuntu-tree-quot-04-64-39)
