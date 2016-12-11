@@ -20,7 +20,7 @@ Ubuntu Server 16.04.1 LTS
 ./ovs-install.sh
 ```
 
-* [Create KVM VM and Bridge with OVS]()
+* [Create KVM VM and Bridge with OVS](http://blog.codybunch.com/2016/10/14/KVM-and-OVS-on-Ubuntu-1604/)
 ```bash
 # First Configure ovs bridge and ovs network setting
 # e.g.
@@ -63,4 +63,4 @@ sudo ifconfig eth0 0
 
 ### TROUBLE SHOOT
 * See [Config Docker Network and Bridge with OVS](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Documents/docker-ovs.md)
-* [Ubuntu kvm hvm trouble](https://qkxue.net/info/189364/ubuntu-kvm-ubuntu-quot-Couldn-find-hvm-kernel-for-Ubuntu-tree-quot-04-64-39)
+* [Ubuntu kvm hvm trouble](http://qkxue.net/info/189364/ubuntu-kvm-ubuntu-quot-Couldn-find-hvm-kernel-for-Ubuntu-tree-quot-04-64-39)
