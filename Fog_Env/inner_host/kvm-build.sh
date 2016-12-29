@@ -27,7 +27,7 @@ fi
 
 # Check image
 
-if [ -s /home/tzuchiao/ubuntu-16.04.1-server-amd64.iso ]
+if [ -s /home/$USER/ubuntu-16.04.1-server-amd64.iso ]
 then
 	echo "Check image complete"
 else
@@ -37,16 +37,16 @@ fi
 
 for ((i = 1; i <= $1; i++))
 do
-	virt-install \
+	sudo virt-install \
 		--virt-type=kvm \
 		--name "vm0$1" \
 		--ram=2048 \
 		--vcpus=2 \
 		--os-variant=auto \
-		--cdrom /home/$whoami/ubuntu-16.04.1-server-amd64.iso \
+		--location /home/$USER/ubuntu-16.04.1-server-amd64.iso \
 		--network bridge=ovs-br0,virtualport_type='openvswitch' \
 		--graphics none \
-		--disk path=/var/lib/libvirt/images/"vm0$1".img,size=20,bus=virtio \
+		--disk path=/var/lib/libvirt/images/"vm0$1".img,size=30,bus=virtio \
 		--console pty,target_type=serial \
 		--extra-args 'console=ttyS0,115200n8 serial'
 done
