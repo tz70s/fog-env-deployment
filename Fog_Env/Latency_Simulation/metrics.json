@@ -1,0 +1,7 @@
+[
+	{
+		"ingress_policing_rate": 1000,
+		"ingress_policing_burst": 100,
+		"delay_time": 50
+	}
+]
