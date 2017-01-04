@@ -1,7 +1,102 @@
 [
-	{
-		"ingress_policing_rate": 1000,
-		"ingress_policing_burst": 100,
-		"delay_time": 50
-	}
+    {
+        "method": "transact",
+        "params": [
+            "Open_vSwitch",
+            {
+                "op": "update",
+                "table": "Interface",
+                "where": [
+                    [
+                        "_uuid",
+                        "==",
+                        [
+                            "uuid",
+                            "060c3438-a335-48ed-9237-8962b653a664"
+                        ]
+                    ]
+                ],
+                "row": {
+                    "ingress_policing_rate": 0,
+                    "ingress_policing_burst": 0
+                }
+            }
+        ],
+        "id": 0
+    },
+    {
+        "method": "transact",
+        "params": [
+            "Open_vSwitch",
+            {
+                "op": "update",
+                "table": "Interface",
+                "where": [
+                    [
+                        "_uuid",
+                        "==",
+                        [
+                            "uuid",
+                            "060c3438-a335-48ed-9237-8962b653a664"
+                        ]
+                    ]
+                ],
+                "row": {
+                    "ingress_policing_rate": 0,
+                    "ingress_policing_burst": 0
+                }
+            }
+        ],
+        "id": 0
+    },
+    {
+        "method": "transact",
+        "params": [
+            "Open_vSwitch",
+            {
+                "op": "update",
+                "table": "Interface",
+                "where": [
+                    [
+                        "_uuid",
+                        "==",
+                        [
+                            "uuid",
+                            "060c3438-a335-48ed-9237-8962b653a664"
+                        ]
+                    ]
+                ],
+                "row": {
+                    "ingress_policing_rate": 0,
+                    "ingress_policing_burst": 0
+                }
+            }
+        ],
+        "id": 0
+    },
+    {
+        "method": "transact",
+        "params": [
+            "Open_vSwitch",
+            {
+                "op": "update",
+                "table": "Interface",
+                "where": [
+                    [
+                        "_uuid",
+                        "==",
+                        [
+                            "uuid",
+                            "060c3438-a335-48ed-9237-8962b653a664"
+                        ]
+                    ]
+                ],
+                "row": {
+                    "ingress_policing_rate": 0,
+                    "ingress_policing_burst": 0
+                }
+            }
+        ],
+        "id": 0
+    }
 ]
