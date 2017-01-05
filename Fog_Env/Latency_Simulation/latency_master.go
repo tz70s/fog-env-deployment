@@ -68,13 +68,15 @@ type Interface_Conf struct {
 	Name string
 	Ingress_policing_rate float64
 	Ingress_policing_burst float64
-	netem_latency float64	
+	Netem_latency float64	
 }
 
-func TCRequest (action string, port_name string, delay float64) {
+func TCRequest (action string, port_name string, delay float64) float64 {
 
 	delay_time := strconv.FormatFloat(delay, 'f', -1, 64)
-
+	
+	var out []byte;
+	
 	resp, err := http.Get("http://" + IP + ":8989" + "/?action="+action+"&port_name="+port_name+"&delay_time="+delay_time);
 
 	if err != nil {
@@ -83,9 +85,12 @@ func TCRequest (action string, port_name string, delay float64) {
 
 	} else {
 		body, _ := ioutil.ReadAll(resp.Body)
-		fmt.Printf("GET OK: %s\n", body);
+		//fmt.Printf("GET OK: %s\n", body);
+		out = body;
 	}
 
+	flo,_ := strconv.ParseFloat(string(out), 64);
+	return flo;
 }
 
 /*
@@ -101,16 +106,42 @@ func LoadJSONConf () {
 	var collects [] Interface_Conf;
 	json.Unmarshal(file,&collects);
 	
-	out,_ := json.Marshal(collects);
-	fmt.Println(string(out));
-} 
+	//out,_ := json.Marshal(collects);
+	//fmt.Println(string(out));
+	
+	var i int = 0;
+	for i < len(collects) {
+		UpdateIngress(collects[i]);
+		i++;
+	}
+}
+
+/*
+	Update OVSDB Ingree policy
+*/
+
+func UpdateIngress (obj Interface_Conf) {
+	UpdateInterfaceOVSDB(obj.Uuid, obj.Ingress_policing_rate, obj.Ingress_policing_burst);
+	if (obj.Netem_latency == -1) {
+		TCRequest("del", obj.Name, obj.Netem_latency);
+	} else {
+		TCRequest("add", obj.Name, obj.Netem_latency);
+	}
+}
+
+/*
+	INIT
+*/
+
+func Init() {
+	SaveJSONConf(TopoViewOVSDB());
+}
 
 /*
 	Save structures to node_conf.json
 */
 
-func SaveJSONConf(collects [] Interface_Conf) {
-	out, _ := json.Marshal(collects);
+func SaveJSONConf(out []byte) {
 	err := ioutil.WriteFile("./node_conf.json", out, 0644);
 	if err != nil {
 		fmt.Printf("Can't successfully save json file %v\n", err);
@@ -139,13 +170,7 @@ func TopoViewOVSDB () []byte {
 	var rslice [] Interface_Conf = ParseMonitoring(response[:resplen]);
 	disp, _ := json.MarshalIndent(rslice, "", "  ");
 	fmt.Printf("%s\n",disp);
-	return response[:resplen];
-}
-
-/* TC Client Request */
-
-func TCNetemLatency() {
-	
+	return disp;
 }
 
 /*
@@ -172,6 +197,7 @@ func ParseMonitoring(input []byte) [] Interface_Conf {
 		tmp_node.Name = last["name"].(string);
 		tmp_node.Ingress_policing_rate = last["ingress_policing_rate"].(float64);
 		tmp_node.Ingress_policing_burst = last["ingress_policing_burst"].(float64);
+		tmp_node.Netem_latency = TCRequest("get", tmp_node.Name, 0);
 		rslice = append(rslice,tmp_node);
 	}
 	return rslice;
@@ -207,7 +233,7 @@ func UpdateParse(source_uuid string, ingress_rate float64, ingress_burst float64
 	Update Interfaces configuration over Socket 
 */
 
-func UpdateInterfaceOVSDB() {
+func UpdateInterfaceOVSDB(source_uuid string, ingress_rate float64, ingress_burst float64) {
 	
 	conn, err := net.Dial("tcp", IP + ":" + PORT);
 	if err != nil {
@@ -215,13 +241,11 @@ func UpdateInterfaceOVSDB() {
 		return;
 	}
 
-	data := UpdateParse("3d0f0cb0-2752-4dde-a6bc-cb6bf07b1785",0,0);
+	data := UpdateParse(source_uuid, ingress_rate, ingress_burst);
 
 	fmt.Fprintf(conn, string(data))
 	response := make([]byte, 1024)
 	conn.Read(response)
-	fmt.Printf("%s\n", response)
-	TopoViewOVSDB();
 }
 
 /*
@@ -236,6 +260,17 @@ func PrettyPrint(origin []byte) ([]byte, error) {
 */
 
 func main() {
-	//TopoViewOVSDB();
-	TCRequest("get","vnet0",100)
+
+	switch(os.Args[1]) {
+		case "init":
+			Init();
+		case "update":
+			LoadJSONConf();
+			TopoViewOVSDB();
+		case "view":
+			TopoViewOVSDB();
+		default:
+			break;
+	}
+
 }

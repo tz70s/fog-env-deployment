@@ -54,9 +54,9 @@ func mod_delay (action string, port_name string, delay_time string) string {
 		case "add":
 			if check_bit == 0 {
 				fmt.Println("Target port existed");
-				return "-1";
+				action = "change";
 			}
-			script_split := []string{"tc","qdisc","add","dev", port_name, "root netem delay", delay_time};
+			script_split := []string{"tc","qdisc",action,"dev", port_name, "root netem delay", delay_time};
 			script = strings.Join(script_split, " ");
 			script = script + "ms";
 
@@ -79,22 +79,6 @@ func mod_delay (action string, port_name string, delay_time string) string {
 			script_split := []string{"tc","qdisc","del","dev",port_name,"root"}
 			script = strings.Join(script_split, " ");
 			delay_tmp = "-1";
-			_, err := exec.Command("sh", "-c", script).Output();
-			if err != nil {
-				fmt.Printf("Execute command failed : %v\n", err);
-			}
-			break;
-
-		case "change":
-			
-			if check_bit == 1 {
-				fmt.Println("Target port not exist");
-				return "-1";
-			}
-			script_split := []string{"tc","qdisc","change","dev", port_name, "root netem delay", delay_time};
-			script := strings.Join(script_split, " ");
-			script = script + "ms";
-			delay_tmp = delay_time;
 			_, err := exec.Command("sh", "-c", script).Output();
 			if err != nil {
 				fmt.Printf("Execute command failed : %v\n", err);

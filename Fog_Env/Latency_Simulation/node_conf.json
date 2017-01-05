@@ -1,9 +1,16 @@
 [
-	{
-		"uuid" : "012",
-		"name" : "jon",
-		"ingress_policing_rate" : 1000,
-		"ingress_policing_burst" : 100,
-		"netem_delay": 100
-	}
+  {
+    "Uuid": "3d0f0cb0-2752-4dde-a6bc-cb6bf07b1785",
+    "Name": "vport0",
+    "Ingress_policing_rate": 0,
+    "Ingress_policing_burst": 0,
+    "Netem_latency": -1
+  },
+  {
+    "Uuid": "4a8efc6b-5faf-4966-85f1-49526ef4b5b8",
+    "Name": "ovs-br0",
+    "Ingress_policing_rate": 0,
+    "Ingress_policing_burst": 0,
+    "Netem_latency": -1
+  }
 ]
