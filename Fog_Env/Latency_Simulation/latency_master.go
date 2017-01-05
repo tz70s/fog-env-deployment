@@ -88,7 +88,7 @@ func TCRequest (action string, port_name string, delay float64) float64 {
 		//fmt.Printf("GET OK: %s\n", body);
 		out = body;
 	}
-
+	
 	flo,_ := strconv.ParseFloat(string(out), 64);
 	return flo;
 }

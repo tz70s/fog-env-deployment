@@ -1,14 +1,14 @@
 [
   {
-    "Uuid": "4a8efc6b-5faf-4966-85f1-49526ef4b5b8",
-    "Name": "ovs-br0",
+    "Uuid": "e1cbae24-161f-4c92-8ab8-5b373cd9728d",
+    "Name": "wlan0",
     "Ingress_policing_rate": 0,
     "Ingress_policing_burst": 0,
     "Netem_latency": -1
   },
   {
-    "Uuid": "3d0f0cb0-2752-4dde-a6bc-cb6bf07b1785",
-    "Name": "vport0",
+    "Uuid": "4a8efc6b-5faf-4966-85f1-49526ef4b5b8",
+    "Name": "ovs-br0",
     "Ingress_policing_rate": 0,
     "Ingress_policing_burst": 0,
     "Netem_latency": -1

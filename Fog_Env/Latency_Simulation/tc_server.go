@@ -37,7 +37,7 @@ func mod_delay (action string, port_name string, delay_time string) string {
 				fmt.Println("Target port not exist");
 				return "-1";
 			}
-			fmt.Println("inter");
+			//fmt.Println("inter");
 			script_split := []string {"tc","qdisc","|","grep",port_name};
 			script = strings.Join(script_split," ");
 
@@ -45,11 +45,25 @@ func mod_delay (action string, port_name string, delay_time string) string {
 			if err != nil {
 				fmt.Printf("Command execution failed : %v\n", err);
 			}
-			sub_strings := strings.Split(string(out)," ");
+			outt := strings.Split(string(out),"\n");
+			var i = 0;
+			var new_out string = string(out);
+			for i < len(outt) {
+				
+				if strings.Contains(outt[i],"netem") {
+					new_out = outt[i];
+					//fmt.Println(new_out);
+					break;
+				}
+				i++;
+				
+			}
+			
+			sub_strings := strings.Split(new_out," ");
 
 			delay_tmp = sub_strings[len(sub_strings)-1];
-
-			return delay_tmp[:len(delay_tmp)-3];
+			//fmt.Println(delay_tmp);
+			return delay_tmp[:len(delay_tmp)-2];
 
 		case "add":
 			if check_bit == 0 {
