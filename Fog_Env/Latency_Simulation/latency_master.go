@@ -260,7 +260,10 @@ func PrettyPrint(origin []byte) ([]byte, error) {
 */
 
 func main() {
-
+	if (len(os.Args) != 2) {
+		fmt.Printf("USAGE:\n\tinit\t:\tInitialized Latencies Configuration & Rerwite node_conf.json\n\tupdate\t:\tUpdate Modification from node_conf.json\n\tview\t:\tCurrent Latencies View\n");
+		os.Exit(0);
+	}
 	switch(os.Args[1]) {
 		case "init":
 			Init();
@@ -270,7 +273,8 @@ func main() {
 		case "view":
 			TopoViewOVSDB();
 		default:
-			break;
+			fmt.Printf("USAGE:\n\tinit\t:\tInitialized Latencies Configuration & Rerwite node_conf.json\n\tupdate\t:\tUpdate Modification from node_conf.json\n\tview\t:\tCurrent Latencies View\n")
+			os.Exit(0);
 	}
 
 }
