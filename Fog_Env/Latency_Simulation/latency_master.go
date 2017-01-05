@@ -8,7 +8,11 @@ import(
 	"fmt"
 	"encoding/json"
 	"net"
-	"bytes"
+	"net/http"
+	//"bytes"
+	"io/ioutil"
+	"os"
+	"strconv"
 )
 
 const PORT string = "6632";
@@ -23,13 +27,11 @@ var Query_data = map[string]interface{}{
 		map[string]interface{} {
 			"Interface": map[string]interface{} {
 				"columns": []string {
-					"_uuid",
 					"name",
 					"ingress_policing_rate",
 					"ingress_policing_burst",
 				},
 			},
-
 		},	
 	},
 }
@@ -51,7 +53,7 @@ var Update_Ingress_Template = map[string]interface{} {
 					},
 				},
 			},
-			"row": map[string]int{
+			"row": map[string]float64{
 				"ingress_policing_rate": 0,
 				"ingress_policing_burst": 0,
 			},
@@ -59,6 +61,60 @@ var Update_Ingress_Template = map[string]interface{} {
 		},
 	},
 	"id": 0,
+}
+
+type Interface_Conf struct {
+	Uuid string
+	Name string
+	Ingress_policing_rate float64
+	Ingress_policing_burst float64
+	netem_latency float64	
+}
+
+func TCRequest (action string, port_name string, delay float64) {
+
+	delay_time := strconv.FormatFloat(delay, 'f', -1, 64)
+
+	resp, err := http.Get("http://" + IP + ":8989" + "/?action="+action+"&port_name="+port_name+"&delay_time="+delay_time);
+
+	if err != nil {
+
+		fmt.Printf("Request error : %v \n", err);
+
+	} else {
+		body, _ := ioutil.ReadAll(resp.Body)
+		fmt.Printf("GET OK: %s\n", body);
+	}
+
+}
+
+/*
+	Load node_conf.json in structure
+*/
+
+func LoadJSONConf () {
+	file, err := ioutil.ReadFile("./node_conf.json");
+	if err != nil {
+		fmt.Printf("Read json file error : %v \n", err);
+		os.Exit(1);
+	}
+	var collects [] Interface_Conf;
+	json.Unmarshal(file,&collects);
+	
+	out,_ := json.Marshal(collects);
+	fmt.Println(string(out));
+} 
+
+/*
+	Save structures to node_conf.json
+*/
+
+func SaveJSONConf(collects [] Interface_Conf) {
+	out, _ := json.Marshal(collects);
+	err := ioutil.WriteFile("./node_conf.json", out, 0644);
+	if err != nil {
+		fmt.Printf("Can't successfully save json file %v\n", err);
+	}
 }
 
 /*
@@ -71,19 +127,61 @@ func TopoViewOVSDB () []byte {
 	fmt.Fprintf(conn, string(out));
 
 	response := make([]byte,1024)
-	conn.Read(response)
+	resplen, err := conn.Read(response);
+	if err != nil {
+		fmt.Printf("Monitoring failed : %v \n",err);
+	}
 
-	fmt.Printf("%s\n",response);
-	//res,_ := PrettyPrint(response);
+	//fmt.Printf("%s\n",response[:resplen]);
+	//res,_ := PrettyPrint(response[:resplen]);
 	//fmt.Printf("%s\n", res);
-	return response;
+	
+	var rslice [] Interface_Conf = ParseMonitoring(response[:resplen]);
+	disp, _ := json.MarshalIndent(rslice, "", "  ");
+	fmt.Printf("%s\n",disp);
+	return response[:resplen];
+}
+
+/* TC Client Request */
+
+func TCNetemLatency() {
+	
+}
+
+/*
+	Parse Monitor response's json format
+*/
+
+func ParseMonitoring(input []byte) [] Interface_Conf {
+	var rslice [] Interface_Conf;
+	var parseObject interface{};
+	err := json.Unmarshal(input, &parseObject);
+	if err != nil {
+		fmt.Printf("Parse Monitoring Object failed : %v\n", err);
+		os.Exit(1);
+	}
+	result := parseObject.(map[string]interface{})
+	interf := result["result"].(map[string]interface{})
+	node := interf["Interface"].(map[string]interface{})
+	for k, v := range node {
+		nest := v.(map[string]interface{})
+		last := nest["new"].(map[string]interface{})
+
+		var tmp_node Interface_Conf;
+		tmp_node.Uuid = k;
+		tmp_node.Name = last["name"].(string);
+		tmp_node.Ingress_policing_rate = last["ingress_policing_rate"].(float64);
+		tmp_node.Ingress_policing_burst = last["ingress_policing_burst"].(float64);
+		rslice = append(rslice,tmp_node);
+	}
+	return rslice;
 }
 
 /*
 	Parse the configuration json structure && Load parameters
 */
 
-func UpdateParse(source_uuid string, ingress_rate int, ingress_burst int) []byte {
+func UpdateParse(source_uuid string, ingress_rate float64, ingress_burst float64) []byte {
 	
 	tmp := Update_Ingress_Template;
 	
@@ -96,7 +194,7 @@ func UpdateParse(source_uuid string, ingress_rate int, ingress_burst int) []byte
 	uuid[1] = source_uuid;
 	
 	/* Configure ingress policing */
-	row := conf["row"].(map[string]int);
+	row := conf["row"].(map[string]float64);
 	row["ingress_policing_rate"] = ingress_rate;
 	row["ingress_policing_burst"] = ingress_burst;
 
@@ -126,15 +224,18 @@ func UpdateInterfaceOVSDB() {
 	TopoViewOVSDB();
 }
 
+/*
 
 func PrettyPrint(origin []byte) ([]byte, error) {
 
 	var out bytes.Buffer;
-	err := json.Indent(&out, []byte(origin), "", "\t");
-	fmt.Printf("%s\n", out)
+	err := json.Indent(&out, []byte(origin), "", "  ");
 	return out.Bytes(), err;
 }
 
+*/
+
 func main() {
-	UpdateInterfaceOVSDB();
+	//TopoViewOVSDB();
+	TCRequest("get","vnet0",100)
 }

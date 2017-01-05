@@ -1,0 +1,9 @@
+[
+	{
+		"uuid" : "012",
+		"name" : "jon",
+		"ingress_policing_rate" : 1000,
+		"ingress_policing_burst" : 100,
+		"netem_delay": 100
+	}
+]
