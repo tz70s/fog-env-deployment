@@ -27,7 +27,7 @@ Fog2 : 192.168.100.61 ~ 192.168.100.90 ( 192.168.200.61 ~ 192.168.200.90 )
 Fog3 : 192.168.100.91 ~ 192.168.100.120 ( 192.168.200.91 ~ 192.168.200.120 )
 Fog4 : 192.168.100.121 ~ 192.168.100.150 ( 192.168.200.121 ~ 192.168.200.150 )
 ```
-![image](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Fog_Env/滑動2.jpg)
+![image](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/Fog_Env/arch.jpg)
 
 * Example of setting up a fog node with upstream and downstream interfaces
 ```Bash
