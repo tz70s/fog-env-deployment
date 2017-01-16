@@ -211,7 +211,6 @@ spec:
         ports:
         - containerPort: 8080
 ```
-	* Command
 ```Bash
 kubectl create -f <name.yaml>
 ```
