@@ -124,3 +124,8 @@ virsh shutdown target_vm_domain_name
 virsh suspend target_vm_domain_name
 virsh resume target_vm_domain_name
 ```
+
+### OpenvSwitch
+OpenvSwitch is used to simulate network switches/routers.
+
+* 
