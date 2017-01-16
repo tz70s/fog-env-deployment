@@ -63,12 +63,12 @@ route -n
 * Latency emulation
 
 ### KVM
-KVM can be installed through installing Ubuntu server distribution, remember to choose the option: Virtual Machine Host. Or [KVM Install](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/kvm-install.sh)
-Also, following configuration tools are needed.
+KVM can be installed through installing Ubuntu server distribution, remember to choose the option: Virtual Machine Host. Or [KVM Install](https://github.com/tz70s/KVM-Docker-OVS-Deployment/blob/master/kvm-install.sh). Also, following configuration tools are needed.
 ```Bash
 sudo apt-get install virtinst libguestfs
 ```
 * virt-install
+
 First should make sure the target patching ovs bridge is up and the installation image is located.
 ```Bash
 virt-install \
@@ -93,6 +93,7 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet splash console=ttyS0"
 ```
 And then set up network configuration and reboot
 * virt-sysprep
+
 More easily, use virt-clone and virt-sysprep to create new vm
 ```Bash
 virt-clone \
@@ -110,6 +111,7 @@ virsh edit target_vm_domain_name
 ```
 * Modify network settings inner vm
 * Re-install openssh
+
 openssh will be conflicted inner vm 
 ```Bash
 sudo apt-get install --reinstall openssh-server openssh-client
