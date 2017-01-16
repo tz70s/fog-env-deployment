@@ -132,11 +132,15 @@ OpenvSwitch is used to simulate network switches/routers.
 ```Bash
 # Show settings
 sudo ovs-vsctl show
+
 # create/add/delete bridge/port
 sudo ovs-vsctl add-br <target_br_name>
 sudo ovs-vsctl add-port <target_br_name> <target_port_name>
 sudo ovs-vsctl del-br <target_br_name>
 sudo ovs-vsctl del-port <target_port_name>
+
+# Port patching
+sudo ovs-vsctl add-port <target_bridge> <target_port_name> -- set interface <target_port_name> type=patch options:peer=<peer_port_name>
 ```
 
 * Flow settings
@@ -145,13 +149,83 @@ Flows will be flushed after shutdown
 ```Bash
 # Dump flows
 sudo ovs-ofctl dump-flows <target_bridge>
+
 # Add/delete flow
 sudo ovs-ofctl add-flow <target_bridge> priority=100,ip,nw_dst=192.168.100.32,actions=output:4
 sudo ovs-ofctl del-flow <target_bridge> ip,nw_dst=192.168.100.32
 ```
 
 * Reference tutorials, documents
+	* [Tutorial](http://www.rendoumi.com/open-vswitchzhong-ovs-ofctlde-xiang-xi-yong-fa/)
+	* [ovs-ofctl](http://openvswitch.org/support/dist-docs/ovs-ofctl.8.txt)
+	* [ovs-vsctl](http://openvswitch.org/support/dist-docs/ovs-vsctl.8.txt)
 
-[Tutorial](http://www.rendoumi.com/open-vswitchzhong-ovs-ofctlde-xiang-xi-yong-fa/)
+* Debug tools
+	* Wireshark
+	* arp -an
+	* tcpdump
 
-[Docs](http://openvswitch.org/support/dist-docs/ovs-ofctl.8.txt)
+### Kubernetes Settings
+Kubernetes is used to manage clustering containers, also provide multiple functionalities
+
+* Installation
+```Bash
+# Require root permission
+# Sudo su
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+# Install docker if you don't have it already.
+apt-get install -y docker.io
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+```
+* Cluster initialization
+```Bash
+# Require root permission
+# Use kubeadm
+# On master node
+kubeadm init --token <token>
+# Token formats 6characters.16characters -> fogvm1.fognodeclusters
+# On client node
+kubeadm join --token <token> <master-ip>
+```
+* Deployment
+	* Example yaml configuration file
+```Yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node-server
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: node-server
+    spec:
+      containers:
+      - name: node-server
+        image: tz70s/node
+        ports:
+        - containerPort: 8080
+```
+	* Command
+```Bash
+kubectl create -f <name.yaml>
+```
+* Service
+```Bash
+kubectl expose deployment/<deployment> --type=NodePort
+```
+* Scaling
+```Bash
+kubectl scale deployment/<deployment> --replicas=<number_of_replicas>
+```
+### Latency Emulation
+[In progress](https://github.com/tz70s/KVM-Docker-OVS-Deployment/tree/master/Fog_Env/Latency_Simulation)
+* Bandwidth limitation
+	* ovs ingress policing rate/burst
+* Queueing delay
+	* tc qdisc netem delay
