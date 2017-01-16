@@ -128,4 +128,30 @@ virsh resume target_vm_domain_name
 ### OpenvSwitch
 OpenvSwitch is used to simulate network switches/routers.
 
-* 
+* Bridges' and Ports' configuration
+```Bash
+# Show settings
+sudo ovs-vsctl show
+# create/add/delete bridge/port
+sudo ovs-vsctl add-br <target_br_name>
+sudo ovs-vsctl add-port <target_br_name> <target_port_name>
+sudo ovs-vsctl del-br <target_br_name>
+sudo ovs-vsctl del-port <target_port_name>
+```
+
+* Flow settings
+
+Flows will be flushed after shutdown 
+```Bash
+# Dump flows
+sudo ovs-ofctl dump-flows <target_bridge>
+# Add/delete flow
+sudo ovs-ofctl add-flow <target_bridge> priority=100,ip,nw_dst=192.168.100.32,actions=output:4
+sudo ovs-ofctl del-flow <target_bridge> ip,nw_dst=192.168.100.32
+```
+
+* Reference tutorials, documents
+
+[Tutorial](http://www.rendoumi.com/open-vswitchzhong-ovs-ofctlde-xiang-xi-yong-fa/)
+
+[Docs](http://openvswitch.org/support/dist-docs/ovs-ofctl.8.txt)
