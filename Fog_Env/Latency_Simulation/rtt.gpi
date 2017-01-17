@@ -1,0 +1,8 @@
+#!/usr/bin/gnuplot
+
+set terminal png font "Gill Sans,9" linewidth 2 rounded fontscale 1.0
+set output "rtt.png"
+set ylabel "RTT(ms)"
+set xlabel "Number of requests/sends"
+plot "pingTimes.dat" w lp
+
