@@ -2,7 +2,7 @@
 
 set terminal png font "Gill Sans,9" linewidth 2 rounded fontscale 1.0
 set output "iperf.png"
-set ylabel "Bandwidth(Kbits)"
+set ylabel "Bandwidth(bps)"
 set xlabel "Time(s)"
 plot "original.dat" w lp,"limitation.dat" w lp 
 
